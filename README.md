@@ -84,6 +84,10 @@ Add extra space (margin) around the window.
 
 Add extra space (padding) around the content inside the window.
 
+#### `--radius`/`-r`
+
+Set the window's border radius
+
 ### Flags for output related settings
 
 #### `--clipboard`/`-b` (only on selected platforms)

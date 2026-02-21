@@ -120,6 +120,14 @@ window including all terminal colors and text decorations.
 			scaffold.SetPadding(float64(padding))
 		}
 
+		// Change border radius if requested
+		if radius, err := cmd.Flags().GetFloat64("radius"); err == nil {
+			if radius < 0 {
+				return fmt.Errorf("radius must be zero or greater: not %f", radius)
+			}
+			scaffold.SetBorderRadius(radius)
+		}
+
 		// Disable window shadow if requested
 		//
 		if val, err := cmd.Flags().GetBool("no-shadow"); err == nil {
@@ -328,6 +336,7 @@ func init() {
 	rootCmd.Flags().IntP("columns", "C", 0, "force fixed number of columns in screenshot")
 	rootCmd.Flags().IntP("margin", "m", 48, "set margin around the window")
 	rootCmd.Flags().IntP("padding", "p", 24, "set padding around the content inside window")
+	rootCmd.Flags().Float64P("radius", "r", 6.0, "set window border radius")
 	rootCmd.Flags().Bool("no-decoration", false, "do not draw window decorations")
 	rootCmd.Flags().Bool("no-border", false, "do not draw window border")
 	rootCmd.Flags().Bool("no-shadow", false, "do not draw window shadow")

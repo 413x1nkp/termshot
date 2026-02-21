@@ -85,8 +85,9 @@ type Scaffold struct {
 	shadowOffsetX   float64
 	shadowOffsetY   float64
 
-	padding float64
-	margin  float64
+	padding      float64
+	margin       float64
+	borderRadius float64
 
 	regular     imgfont.Face
 	bold        imgfont.Face
@@ -146,6 +147,8 @@ func (s *Scaffold) SetColumns(columns int) { s.columns = columns }
 func (s *Scaffold) SetMargin(margin float64) { s.margin = margin * s.factor }
 
 func (s *Scaffold) SetPadding(padding float64) { s.padding = padding * s.factor }
+
+func (s *Scaffold) SetBorderRadius(radius float64) { s.borderRadius = radius * s.factor }
 
 func (s *Scaffold) DrawDecorations(value bool) { s.drawDecorations = value }
 
@@ -562,7 +565,8 @@ func (s *Scaffold) image() (image.Image, error) {
 
 	// TODO: centering
 	var (
-		corner   = f(6)
+		corner = s.borderRadius
+		// TODO: rename this to decoration radius or something
 		radius   = f(9)
 		distance = f(25)
 	)
