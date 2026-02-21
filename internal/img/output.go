@@ -565,17 +565,16 @@ func (s *Scaffold) image() (image.Image, error) {
 
 	// TODO: centering
 	var (
-		corner = s.borderRadius
-		// TODO: rename this to decoration radius or something
-		radius   = f(9)
-		distance = f(25)
+		corner             = s.borderRadius
+		decorationRadius   = f(9)
+		decorationDistance = f(25)
 	)
 
 	contentWidth, contentHeight := s.measureContent()
 
 	// Make sure the output window is big enough in case no content or very few
 	// content will be rendered
-	contentWidth = math.Max(contentWidth, 3*distance+3*radius)
+	contentWidth = math.Max(contentWidth, 3*decorationDistance+3*decorationRadius)
 
 	marginX, marginY := s.margin, s.margin
 	paddingX, paddingY := s.padding, s.padding
@@ -631,7 +630,7 @@ func (s *Scaffold) image() (image.Image, error) {
 	//
 	if s.drawDecorations {
 		for i, color := range []string{red, yellow, green} {
-			dc.DrawCircle(xOffset+paddingX+float64(i)*distance+f(4), yOffset+paddingY+f(4), radius)
+			dc.DrawCircle(xOffset+paddingX+float64(i)*decorationDistance+f(4), yOffset+paddingY+f(4), decorationRadius)
 			dc.SetHexColor(color)
 			dc.Fill()
 		}
