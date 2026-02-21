@@ -645,7 +645,13 @@ func (s *Scaffold) image() (image.Image, error) {
 
 	var centerHOffset = 0.0
 	if s.centerH {
-		centerHOffset = (contentWidth - textWidth) / 2
+		if contentWidth == textWidth {
+			centerHOffset = ((contentWidth + paddingX) - textWidth) / 2
+
+		} else {
+			centerHOffset = (contentWidth - textWidth) / 2
+
+		}
 	}
 
 	// Apply the actual text into the prepared content area of the window
