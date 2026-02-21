@@ -51,6 +51,9 @@ termshot -- "ls -1 | grep go"
 
 ### Flags to control the look
 
+#### `--colorscheme <file>`
+Specify colorscheme to use for the image. ![example](colorscheme_example.json)
+
 #### `--show-cmd`/`-c`
 
 Include the target command in the screenshot.
