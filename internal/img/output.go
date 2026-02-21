@@ -80,6 +80,8 @@ type Scaffold struct {
 	drawDecorations bool
 	drawShadow      bool
 
+	centerH bool
+
 	shadowBaseColor string
 	shadowRadius    uint8
 	shadowOffsetX   float64
@@ -114,6 +116,8 @@ func NewImageCreator() Scaffold {
 
 		margin:  f * 48,
 		padding: f * 24,
+
+		centerH: false,
 
 		drawBorder:      true,
 		drawDecorations: true,
@@ -151,6 +155,8 @@ func (s *Scaffold) SetPadding(padding float64) { s.padding = padding * s.factor 
 func (s *Scaffold) SetBorderRadius(radius float64) { s.borderRadius = radius * s.factor }
 
 func (s *Scaffold) DrawDecorations(value bool) { s.drawDecorations = value }
+
+func (s *Scaffold) CenterHorizontal(value bool) { s.centerH = value }
 
 func (s *Scaffold) DrawBorder(value bool) { s.drawBorder = value }
 
@@ -570,11 +576,12 @@ func (s *Scaffold) image() (image.Image, error) {
 		decorationDistance = f(25)
 	)
 
-	contentWidth, contentHeight := s.measureContent()
+	textWidth, contentHeight := s.measureContent()
 
 	// Make sure the output window is big enough in case no content or very few
 	// content will be rendered
-	contentWidth = math.Max(contentWidth, 3*decorationDistance+3*decorationRadius)
+	minWidth := 3*decorationDistance + 3*decorationRadius
+	contentWidth := math.Max(textWidth, minWidth)
 
 	marginX, marginY := s.margin, s.margin
 	paddingX, paddingY := s.padding, s.padding
@@ -636,9 +643,14 @@ func (s *Scaffold) image() (image.Image, error) {
 		}
 	}
 
+	var centerHOffset = 0.0
+	if s.centerH {
+		centerHOffset = (contentWidth - textWidth) / 2
+	}
+
 	// Apply the actual text into the prepared content area of the window
 	//
-	x, y := xOffset+paddingX, yOffset+paddingY+titleOffset+s.fontHeight()
+	x, y := xOffset+paddingX+centerHOffset, yOffset+paddingY+titleOffset+s.fontHeight()
 	for _, cr := range s.content {
 		switch cr.Settings & 0x1C {
 		case 4:
@@ -693,7 +705,7 @@ func (s *Scaffold) image() (image.Image, error) {
 
 		switch str {
 		case "\n":
-			x = xOffset + paddingX
+			x = xOffset + paddingX + centerHOffset
 			y += h * s.lineSpacing
 			continue
 

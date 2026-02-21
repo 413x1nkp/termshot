@@ -146,6 +146,12 @@ window including all terminal colors and text decorations.
 			scaffold.DrawDecorations(!val)
 		}
 
+		// Center text within window by width
+		//
+		if val, err := cmd.Flags().GetBool("center-horizontal"); err == nil {
+			scaffold.CenterHorizontal(val)
+		}
+
 		// Configure that canvas is clipped at the end
 		//
 		if val, err := cmd.Flags().GetBool("clip-canvas"); err == nil {
@@ -337,6 +343,7 @@ func init() {
 	rootCmd.Flags().IntP("margin", "m", 48, "set margin around the window")
 	rootCmd.Flags().IntP("padding", "p", 24, "set padding around the content inside window")
 	rootCmd.Flags().Float64P("radius", "r", 6.0, "set window border radius")
+	rootCmd.Flags().Bool("center-horizontal", false, "centre the complete text output by width")
 	rootCmd.Flags().Bool("no-decoration", false, "do not draw window decorations")
 	rootCmd.Flags().Bool("no-border", false, "do not draw window border")
 	rootCmd.Flags().Bool("no-shadow", false, "do not draw window shadow")

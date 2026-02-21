@@ -76,6 +76,10 @@ Do not draw window decorations (minimize, maximize, and close button).
 
 Do not draw window shadow.
 
+#### `--center-horizontal`
+
+Center text horizontally within the window
+
 #### `--margin`/`-m`
 
 Add extra space (margin) around the window.
