@@ -128,6 +128,12 @@ window including all terminal colors and text decorations.
 
 		// Disable window decorations (buttons) if requested
 		//
+		if val, err := cmd.Flags().GetBool("no-border"); err == nil {
+			scaffold.DrawBorder(!val)
+		}
+
+		// Disable window decorations (buttons) if requested
+		//
 		if val, err := cmd.Flags().GetBool("no-decoration"); err == nil {
 			scaffold.DrawDecorations(!val)
 		}
@@ -323,6 +329,7 @@ func init() {
 	rootCmd.Flags().IntP("margin", "m", 48, "set margin around the window")
 	rootCmd.Flags().IntP("padding", "p", 24, "set padding around the content inside window")
 	rootCmd.Flags().Bool("no-decoration", false, "do not draw window decorations")
+	rootCmd.Flags().Bool("no-border", false, "do not draw window border")
 	rootCmd.Flags().Bool("no-shadow", false, "do not draw window shadow")
 	rootCmd.Flags().BoolP("clip-canvas", "s", false, "clip canvas to visible image area (no margin)")
 	rootCmd.Flags().StringSlice("font", nil, "custom font files (TTF/OTF) to use instead of default Hack font")

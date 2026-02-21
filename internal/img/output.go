@@ -71,10 +71,12 @@ type Scaffold struct {
 
 	defaultForegroundColor color.Color
 	defaultBackgroundColor color.Color
+	defaultBorderColor     color.Color
 	customColors           map[int]color.Color
 
 	clipCanvas bool
 
+	drawBorder      bool
 	drawDecorations bool
 	drawShadow      bool
 
@@ -105,12 +107,14 @@ func NewImageCreator() Scaffold {
 	return Scaffold{
 		defaultForegroundColor: bunt.LightGray,
 		defaultBackgroundColor: color.RGBA{R: 0x15, G: 0x15, B: 0x15, A: 255}, // #151515
+		defaultBorderColor:     color.RGBA{R: 0x40, G: 0x40, B: 0x40, A: 255}, // #404040
 
 		factor: f,
 
 		margin:  f * 48,
 		padding: f * 24,
 
+		drawBorder:      true,
 		drawDecorations: true,
 		drawShadow:      true,
 
@@ -144,6 +148,8 @@ func (s *Scaffold) SetMargin(margin float64) { s.margin = margin * s.factor }
 func (s *Scaffold) SetPadding(padding float64) { s.padding = padding * s.factor }
 
 func (s *Scaffold) DrawDecorations(value bool) { s.drawDecorations = value }
+
+func (s *Scaffold) DrawBorder(value bool) { s.drawBorder = value }
 
 func (s *Scaffold) DrawShadow(value bool) { s.drawShadow = value }
 
@@ -291,6 +297,15 @@ func (s *Scaffold) LoadColorscheme(colorschemeFile string) error {
 			return fmt.Errorf("invalid background color %s: %w", backgroundHex, err)
 		}
 		s.defaultBackgroundColor = c
+	}
+
+	// Apply custom border color if specified
+	if borderHex, exists := scheme.Colors["border"]; exists {
+		c, err := parseHexColor(borderHex)
+		if err != nil {
+			return fmt.Errorf("invalid border color %s: %w", borderHex, err)
+		}
+		s.defaultBorderColor = c
 	}
 
 	return nil
@@ -545,6 +560,7 @@ func (s *Scaffold) measureContent() (width float64, height float64) {
 func (s *Scaffold) image() (image.Image, error) {
 	f := func(value float64) float64 { return s.factor * value }
 
+	// TODO: centering
 	var (
 		corner   = f(6)
 		radius   = f(9)
@@ -599,10 +615,12 @@ func (s *Scaffold) image() (image.Image, error) {
 	dc.SetColor(s.defaultBackgroundColor)
 	dc.Fill()
 
-	dc.DrawRoundedRectangle(xOffset, yOffset, width-2*marginX, height-2*marginY, corner)
-	dc.SetHexColor("#404040")
-	dc.SetLineWidth(f(1))
-	dc.Stroke()
+	if s.drawBorder {
+		dc.DrawRoundedRectangle(xOffset, yOffset, width-2*marginX, height-2*marginY, corner)
+		dc.SetColor(s.defaultBorderColor)
+		dc.SetLineWidth(f(1))
+		dc.Stroke()
+	}
 
 	// Optional: Draw window decorations (i.e. three buttons) to produce the
 	// impression of an actional window
