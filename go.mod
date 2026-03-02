@@ -1,6 +1,6 @@
 module github.com/homeport/termshot
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/creack/pty v1.1.24
@@ -9,7 +9,7 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/gonvenience/bunt v1.4.3
 	github.com/gonvenience/font v0.0.4
-	github.com/gonvenience/neat v1.3.17
+	github.com/gonvenience/neat v1.3.18
 	github.com/gonvenience/term v1.0.5
 	github.com/mattn/go-isatty v0.0.20
 	github.com/onsi/ginkgo/v2 v2.28.1
@@ -33,7 +33,7 @@ require (
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/mod v0.33.0 // indirect
-	golang.org/x/net v0.50.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
